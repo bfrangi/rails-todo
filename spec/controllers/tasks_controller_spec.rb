@@ -4,14 +4,8 @@ require 'support/authentication_spec_helper'
 describe TasksController do
   context 'when logged in' do
     before :each do
-      @logged_in_user = User.create(
-        email: 'some.email@some.domain',
-        password: 'some_password'
-      )
-      @other_user = User.create(
-        email: 'some.other.email@some.domain',
-        password: 'some_other_password'
-      )
+      @logged_in_user = create(:user)
+      @other_user = create(:user)
 
       sign_in @logged_in_user
     end
