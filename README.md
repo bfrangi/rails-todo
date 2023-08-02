@@ -17,12 +17,19 @@ This is a demo project to show the use of factory_bot for testing a rails applic
     bundle install
     ```
 
-3. Run the server:
+4. Run migrations:
+
+    ```
+    ./bin/rails db:migrate
+    ```
+
+4. Run the server:
 
     ```
     ./bin/rails server
     ```
-4. Open a browser at http://127.0.0.1:3000/
+    
+5. Open a browser at http://127.0.0.1:3000/
 
 
 TODO: Add link to post.
