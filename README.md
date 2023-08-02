@@ -1,24 +1,28 @@
-# README
+# rails-todo
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a demo project to show the use of factory_bot for testing a rails application.
 
-Things you may want to cover:
+## Run the project
 
-* Ruby version
+1. Clone the repo:
+    
+    ```
+    git clone https://github.com/bfrangi/rails-todo.git
+    ```
 
-* System dependencies
+2. Run bundler:
 
-* Configuration
+    ```
+    cd rails-todo
+    bundle install
+    ```
 
-* Database creation
+3. Run the server:
 
-* Database initialization
+    ```
+    ./bin/rails server
+    ```
+4. Open a browser at http://127.0.0.1:3000/
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+TODO: Add link to post.
