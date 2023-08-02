@@ -4,16 +4,15 @@ require 'support/authentication_spec_helper'
 describe TasksController do
   context 'when logged in' do
     before :each do
-      @logged_in_user = create(:user)
-      @other_user = create(:user)
+      @user = create(:user)
 
-      sign_in @logged_in_user
+      sign_in @user
     end
 
     describe 'GET index' do
       it 'assigns @tasks correctly' do
-        task = @logged_in_user.tasks.create(content: 'some content')
-        task_by_other_user = @other_user.tasks.create(content: 'some different content')
+        task = create(:task, user: @user)
+        task_by_other_user = create(:task)
         get :index
         expect(assigns(:tasks)).to eq([task])
       end
