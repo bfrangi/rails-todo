@@ -4,8 +4,8 @@ RSpec.describe Task, type: :model do
   describe 'scopes' do
     describe '.completed' do
       it 'returns only completed tasks' do
-        completed_task = create(:task, completed: Time.now)
-        not_completed_task = create(:task, completed: nil)
+        completed_task = create(:task, :completed)
+        not_completed_task = create(:task)
 
         expect(Task.completed).to eq([completed_task])
       end
@@ -13,8 +13,8 @@ RSpec.describe Task, type: :model do
 
     describe '.not_completed' do
       it 'returns only not completed tasks' do
-        completed_task = create(:task, completed: Time.now)
-        not_completed_task = create(:task, completed: nil)
+        completed_task = create(:task, :completed)
+        not_completed_task = create(:task)
 
         expect(Task.not_completed).to eq([not_completed_task])
       end
