@@ -23,9 +23,9 @@ We can then set up our test suite by installing `rspec` and `factory_bot`. To do
 # Gemfile
 
 group :development, :test do
-    ...
-    gem 'rspec-rails'
-    gem 'factory_bot_rails'
+  ...
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 ```
 
@@ -46,7 +46,7 @@ Finally, we need to configure `factory_bot`. To do that, we add the following co
 require 'factory_bot'
 
 RSpec.configure do |config|
-    config.include FactoryBot::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end
 ```
 
@@ -94,7 +94,7 @@ Awesome, we can now create new tasks, give them some content, see a list of all 
 # app/models/task.rb
 
 class Task < ApplicationRecord
-    validates :content, presence: true
+  validates :content, presence: true
 end
 ```
 
@@ -111,8 +111,8 @@ Devise will now ask you to configure some additional settings. For this project,
 ```rb
 # config/environments/development.rb
 
-    ...
-    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  ...
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end
 ```
 
@@ -121,8 +121,8 @@ And define the root url in `config/routes.rb` as:
 ```rb
 # config/routes.rb
 
-    ...
-    root to: "tasks#index"
+  ...
+  root to: "tasks#index"
 end
 ```
 
@@ -131,12 +131,12 @@ Last of all, we can add the suggested bit of html to `app/views/layouts/applicat
 ```erb
 # app/views/layouts/application.html.erb
 
-        ...
-        <body>
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
-        <%= yield %>
-    </body>
+    ...
+    <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= yield %>
+  </body>
 </html>
 ```
 
@@ -146,9 +146,9 @@ And make sure you have the following line in your `spec/rails_helper.rb` file:
 # spec/rails_helper.rb
 
 RSpec.configure do |config|
-    ...
-    # Include Devise helpers
-    config.include Devise::Test::ControllerHelpers, type: :controller
+  ...
+  # Include Devise helpers
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end
 ```
 
@@ -164,18 +164,18 @@ Make sure you have the server running and head over to `http://127.0.0.1:3000/us
 ```erb
 # app/views/layouts/application.html.erb
 
-        ...
-        <div>
-            <% if user_signed_in? %>
-                <%= link_to "Profile", edit_user_registration_path %>
-                <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
-            <% else %>
-                <% link_to "Sign Up", new_user_registration_path %>
-                <%= link_to "Log In", new_user_session_path %>
-            <% end %>
-        </div>
-        <%= yield %>
-    </body>
+    ...
+    <div>
+      <% if user_signed_in? %>
+        <%= link_to "Profile", edit_user_registration_path %>
+        <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+      <% else %>
+        <% link_to "Sign Up", new_user_registration_path %>
+        <%= link_to "Log In", new_user_session_path %>
+      <% end %>
+    </div>
+    <%= yield %>
+  </body>
 </html>
 ```
 
@@ -185,8 +185,8 @@ And the last thing we have left to do is restrict the access to tasks so that ea
 # app/models/task.rb
 
 class Task < ApplicationRecord
-    validates :content, presence: true
-    belongs_to :user
+  validates :content, presence: true
+  belongs_to :user
 end
 ```
 
@@ -194,11 +194,11 @@ end
 # app/models/user.rb
 
 class User < ApplicationRecord
-    # Include default devise modules. Others available are:
-    # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-    devise :database_authenticatable, :registerable,
-           :recoverable, :rememberable, :validatable
-    has_many :tasks
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+  has_many :tasks
 end
 ```
 
@@ -216,8 +216,8 @@ In the tasks controller, we want to force the user to log in before accessing an
 # app/controllers/tasks_controller.rb
 
 class TasksController < ApplicationController
-    before_action :authenticate_user!
-    ...
+  before_action :authenticate_user!
+  ...
 ```
 
 And we need to modify the `set_task` method to only look for tasks belonging to the currently logged in user:
@@ -225,13 +225,13 @@ And we need to modify the `set_task` method to only look for tasks belonging to 
 ```rb
 # app/controllers/tasks_controller.rb
 
-        ...
-        def set_task
-            @task = current_user.tasks.find(params[:id])
-        rescue ActiveRecord::RecordNotFound
-            redirect_to root_path
-        end
-        ...
+    ...
+    def set_task
+      @task = current_user.tasks.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path
+    end
+    ...
 ```
 
 This function is executed before the show, edit, update and destroy actions, and it will make sure that a user can only access their own tasks. The user will be redirected to the root path if they try to access a task that does not belong to them.
@@ -241,11 +241,11 @@ To make sure the task is associated with the user that is creating it, we need t
 ```rb
 # app/controllers/tasks_controller.rb
 
+  ...
+  def create
+    @task = Task.new(task_params)
+    @task.user = current_user
     ...
-    def create
-        @task = Task.new(task_params)
-        @task.user = current_user
-        ...
 ```
 
 And to make sure only the user’s tasks are shown in the index page, we need to change the index action:
@@ -253,11 +253,11 @@ And to make sure only the user’s tasks are shown in the index page, we need to
 ```rb
 # app/controllers/tasks_controller.rb
 
-    ...
-    def index
-        @tasks = current_user.tasks.all
-    end
-    ...
+  ...
+  def index
+    @tasks = current_user.tasks.all
+  end
+  ...
 ```
 
 Sweet! We now have a basic todo app built with rails and set up with `rspec` and `factory_bot`, which we can use to write some tests and explore the power of factories!
